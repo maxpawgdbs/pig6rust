@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Pig-6 • P6T Market</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+
+        <link rel="stylesheet" href="common.css">
+        <link rel="stylesheet" href="styles.css">
+
+        <!--
+            IMPORTANT:
+            All scripts use "defer" so they don't block HTML parsing and
+            they still execute in document order (chart.js -> marketApi.js -> app.js)
+            once the DOM is ready. This alone does not fix a hung/blocked CDN request,
+            so app.js also has its own timeout + fallback logic — see app.js.
+
+            site.js is independent of the market data pipeline (it only
+            builds the shared header/nav + page effects), so it's safe to
+            load in parallel rather than chaining it after marketApi/app.
+        -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+        <script src="marketApi.js" defer></script>
+        <script src="app.js" defer></script>
+        <script src="site.js" defer></script>
+    </head>
+
+    <body>
+
+        <div id="site-header"></div>
+
+        <div class="loading-screen" id="loading">
+            <div class="loading-text" id="loadingText">Loading market...</div>
+        </div>
+
+        <div id="app" class="hidden">
+
+            <header class="hero">
+
+                <div class="hero-left reveal">
+
+                    <div class="badge">
+                        P6T Market
+                    </div>
+
+                    <h1>
+                        Anonymous code market
+                    </h1>
+
+                    <p class="subtitle">
+                        Designed to protect.
+                    </p>
+
+                </div>
+
+                <div class="hero-right reveal reveal-delay-1">
+
+                    <div class="price-card glow-hover">
+
+                        <span class="label">
+                            Buy Price
+                        </span>
+
+                        <div class="price">
+
+                            <span id="currentPrice">
+                                --
+                            </span>
+
+                            <small>P6T</small>
+
+                        </div>
+
+                        <span class="label">
+                            <br>Sell Price
+                        </span>
+
+                        <div class="price">
+
+                            <span id="currentPrice2">
+                                --
+                            </span>
+
+                            <small>P6T</small>
+
+                        </div>
+                    </div>
+
+                    <div class="market-info">
+
+                        <div class="glow-hover">
+
+                            <span class="label">
+                                Available Codes
+                            </span>
+
+                            <strong id="availableCodes">
+                                --
+                            </strong>
+
+                        </div>
+
+                        <div class="glow-hover">
+
+                            <span class="label">
+                                Market Status
+                            </span>
+
+                            <strong class="status">
+
+                                <span class="dot" id="statusDot"></span>
+
+                                <span id="marketStatus">
+                                    ACTIVE
+                                </span>
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+            <section class="chart-section reveal">
+
+                <div class="section-header">
+
+                    <h2>
+                        Price History
+                    </h2>
+
+                    <div class="range-buttons">
+
+                        <button class="ripple" data-range="1H">1H</button>
+                        <button class="ripple" data-range="6H">6H</button>
+                        <button class="ripple active"
+                            data-range="24H">24H</button>
+                        <button class="ripple" data-range="7D">7D</button>
+                        <button class="ripple" data-range="30D">30D</button>
+
+                    </div>
+
+                </div>
+
+                <canvas id="marketChart"></canvas>
+
+                <div id="chartFallback" class="chart-fallback hidden">
+                    Chart library unavailable — showing raw values only.
+                </div>
+
+            </section>
+
+            <section class="stats-grid">
+
+                <div class="card glow-hover reveal">
+
+                    <span>Current Price</span>
+
+                    <strong id="statPrice">--</strong>
+
+                </div>
+
+                <div class="card glow-hover reveal reveal-delay-1">
+
+                    <span>Available Codes</span>
+
+                    <strong id="statCodes">--</strong>
+
+                </div>
+
+                <div class="card glow-hover reveal reveal-delay-2">
+
+                    <span>Market Capacity</span>
+
+                    <strong id="statCapacity">100</strong>
+
+                </div>
+
+                <div class="card glow-hover reveal reveal-delay-3">
+
+                    <span>Price Change</span>
+
+                    <strong id="statChange">--</strong>
+
+                </div>
+
+                <div class="card glow-hover reveal reveal-delay-4">
+
+                    <span>Market Activity</span>
+
+                    <strong id="statStatus">ACTIVE</strong>
+
+                </div>
+
+            </section>
+
+            <section class="leaderboard reveal">
+
+                <div class="section-header">
+
+                    <h2>Leaderboard</h2>
+
+                    <div class="range-buttons" id="leaderboardButtons">
+
+                        <button class="ripple" data-limit="3">Top 3</button>
+                        <button class="ripple" data-limit="5">Top 5</button>
+                        <button class="ripple active" data-limit="10">Top
+                            10</button>
+                        <button class="ripple" data-limit="all">All</button>
+
+                    </div>
+
+                </div>
+
+                <div class="leaderboard-list" id="leaderboardList">
+                    <!-- rows injected by JS -->
+                </div>
+
+            </section>
+
+            <section class="info reveal">
+
+                <h2>Dynamic pricing</h2>
+
+                <p>
+
+                    The price of anonymous codes changes with market
+                    availability.
+
+                </p>
+
+                <ul>
+
+                    <li>More available codes → lower price.</li>
+
+                    <li>Fewer available codes → higher price.</li>
+
+                    <li>Every operation recalculates the market.</li>
+
+                </ul>
+
+            </section>
+
+            <section class="formula reveal">
+
+                <h2>Price Formula</h2>
+
+                <pre>
+
+Buy Price = Pmin × (1 + A × ((100 − Q) / Q))
+
+Sell Price = Pmin × (1 + A × ((100 − Q) / Q)) * C
+
+Pmin — minimum price
+
+A — market coefficient
+
+Q — available codes
+
+C — coefficient
+
+</pre>
+
+            </section>
+
+            <section class="commands reveal">
+
+                <h2>P6T Commands</h2>
+
+                <div class="command-list">
+
+                    <div><code>/market</code><span>View current market
+                            state.</span></div>
+
+                    <div><code>/balance</code><span>View your P6T balance and
+                            active codes.</span></div>
+
+                    <div><code>/buy</code><span>Buy anonymous
+                            codes.</span></div>
+
+                    <div><code>/sell</code><span>Sell anonymous
+                            codes.</span></div>
+
+                    <div><code>/mycodes</code><span>View your active anonymous
+                            codes.</span></div>
+
+                    <div><code>/pay</code><span>Transfer P6T.</span></div>
+                </div>
+
+            </section>
+
+            <section class="security reveal">
+
+                <h2>Built for control</h2>
+
+                <ul>
+
+                    <li>Single-use anonymous codes</li>
+
+                    <li>Automatically invalidated after use</li>
+
+                    <li>Not transferable</li>
+
+                    <li>Subject to moderation rules</li>
+
+                </ul>
+
+            </section>
+
+            <footer>
+
+                <div>
+
+                    <h3>Pig-6</h3>
+
+                    <p>Pig-6 Tokens</p>
+
+                    <p>Designed to protect.</p>
+
+                </div>
+
+                <div>
+
+                </div>
+
+            </footer>
+
+        </div>
+
+        <div id="errorBox" class="error hidden">
+            <span id="errorText">Market data temporarily unavailable.</span>
+            <button id="retryButton" class="ripple" type="button">Retry</button>
+        </div>
+
+    </body>
+</html>

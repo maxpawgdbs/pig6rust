@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Pig-6 — Verify Certificate</title>
+
+        <link rel="stylesheet" href="common.css">
+
+        <style>
+
+main{
+
+    min-height:calc(100vh - var(--header-h));
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:60px 40px 40px;
+
+    text-align:center;
+
+}
+
+.badge{
+
+    display:inline-flex;
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    margin-bottom:28px;
+
+}
+
+.logo{
+
+    width:14px;
+    height:14px;
+
+    border-radius:50%;
+
+    background:var(--green);
+
+    box-shadow:0 0 18px rgba(34,197,94,.8);
+
+    margin-bottom:22px;
+
+    animation:pulse-dot 2.6s ease-in-out infinite;
+
+}
+
+h1{
+
+    font-size:44px;
+
+    letter-spacing:-1.5px;
+
+    margin-bottom:14px;
+
+}
+
+.subtitle{
+
+    color:var(--muted);
+
+    font-size:16px;
+
+    max-width:480px;
+
+    line-height:1.7;
+
+    margin-bottom:40px;
+
+}
+
+.panel{
+
+    width:100%;
+
+    max-width:440px;
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    padding:28px;
+
+    text-align:left;
+
+}
+
+.field{
+
+    margin-bottom:20px;
+
+}
+
+.field:last-of-type{
+
+    margin-bottom:0;
+
+}
+
+label{
+
+    display:block;
+
+    font-size:12px;
+
+    letter-spacing:.06em;
+
+    text-transform:uppercase;
+
+    color:var(--muted);
+
+    margin-bottom:10px;
+
+}
+
+input[type="text"]{
+
+    width:100%;
+
+    background:var(--bg);
+
+    border:1px solid var(--border);
+
+    border-radius:12px;
+
+    padding:14px 16px;
+
+    color:var(--text);
+
+    font-size:15px;
+
+    font-family:inherit;
+
+    outline:none;
+
+    transition:border-color .2s ease, box-shadow .2s ease;
+
+}
+
+input[type="text"]::placeholder{
+
+    color:#52525b;
+
+}
+
+input[type="text"]:focus{
+
+    border-color:var(--green);
+
+    box-shadow:0 0 0 3px rgba(34,197,94,.18);
+
+}
+
+.status-msg{
+
+    margin-top:14px;
+
+    font-size:13.5px;
+
+    color:var(--muted);
+
+    display:none;
+
+}
+
+.status-msg.visible{
+
+    display:block;
+
+}
+
+button.submit{
+
+    width:100%;
+
+    margin-top:26px;
+
+    background:var(--green);
+
+    color:#04140a;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:14px 16px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    font-family:inherit;
+
+    cursor:pointer;
+
+    transition:opacity .2s ease, transform .15s ease;
+
+}
+
+button.submit:hover{
+
+    opacity:.9;
+
+}
+
+button.submit:active{
+
+    transform:scale(.98);
+
+}
+
+button.submit:disabled{
+
+    opacity:.5;
+
+    cursor:not-allowed;
+
+}
+
+.error-msg{
+
+    margin-top:14px;
+
+    font-size:13.5px;
+
+    color:#ef4444;
+
+    display:none;
+
+}
+
+.error-msg.visible{
+
+    display:block;
+
+}
+
+footer{
+
+    margin-top:50px;
+
+    color:#71717a;
+
+    font-size:13px;
+
+}
+
+@media(max-width:520px){
+
+h1{
+
+    font-size:34px;
+
+}
+
+.panel{
+
+    padding:22px;
+
+}
+
+}
+
+</style>
+
+    </head>
+
+    <body>
+
+        <div id="site-header"></div>
+
+        <main>
+
+            <div class="badge reveal">
+                Pig-6 Certificates
+            </div>
+
+            <div class="logo reveal reveal-delay-1"></div>
+
+            <h1 class="reveal reveal-delay-1">
+                Verify a certificate
+            </h1>
+
+            <p class="subtitle reveal reveal-delay-2">
+                Paste a certificate signature — Pig-6 figures out whether
+                it's standard or shadow and takes you to the right page.
+            </p>
+
+            <form class="panel glow-hover reveal reveal-delay-2"
+                id="verifyForm">
+
+                <div class="field">
+                    <label for="signature">Signature</label>
+                    <input
+                        type="text"
+                        id="signature"
+                        name="signature"
+                        placeholder="e.g. 3f9a7c1e..."
+                        autocomplete="off"
+                        required>
+                </div>
+
+                <button type="submit" class="submit ripple" id="submitBtn">
+                    Verify certificate
+                </button>
+
+                <p class="error-msg" id="errorMsg">
+                    Enter a signature to continue.
+                </p>
+
+                <p class="status-msg" id="statusMsg">
+                    Checking certificate…
+                </p>
+
+            </form>
+
+            <footer>
+
+                Pig-6 © 2026
+
+            </footer>
+
+        </main>
+
+        <script>
+
+            const form = document.getElementById("verifyForm");
+            const signatureInput = document.getElementById("signature");
+            const errorMsg = document.getElementById("errorMsg");
+            const statusMsg = document.getElementById("statusMsg");
+            const submitBtn = document.getElementById("submitBtn");
+
+            // The backend keeps standard (/check) and shadow (/shadow)
+            // certificates on separate endpoints, and each one 404s if
+            // the signature belongs to the other type. So: try /check
+            // first: if it resolves, that's a standard cert and we can
+            // just land there. If it 404s, fall back to /shadow. If
+            // that also 404s, the signature doesn't exist at all.
+            async function resolveCertificate(signature) {
+
+                const checkUrl = `/check?signature=${encodeURIComponent(signature)}`;
+                const shadowUrl = `/shadow?signature=${encodeURIComponent(signature)}`;
+
+                try {
+
+                    const checkRes = await fetch(checkUrl, { method: "GET" });
+
+                    if (checkRes.ok) {
+                        return checkUrl;
+                    }
+
+                } catch (err) {
+                    // network error, fall through to try shadow anyway
+                }
+
+                try {
+
+                    const shadowRes = await fetch(shadowUrl, { method: "GET" });
+
+                    if (shadowRes.ok) {
+                        return shadowUrl;
+                    }
+
+                } catch (err) {
+                    // ignore, handled below
+                }
+
+                return null;
+
+            }
+
+            form.addEventListener("submit", async function (e) {
+
+                e.preventDefault();
+
+                const signature = signatureInput.value.trim();
+
+                errorMsg.classList.remove("visible");
+
+                if (!signature) {
+                    errorMsg.textContent = "Enter a signature to continue.";
+                    errorMsg.classList.add("visible");
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                statusMsg.classList.add("visible");
+
+                const target = await resolveCertificate(signature);
+
+                statusMsg.classList.remove("visible");
+                submitBtn.disabled = false;
+
+                if (target) {
+                    window.location.href = target;
+                } else {
+                    errorMsg.textContent = "Certificate not found. Check the signature and try again.";
+                    errorMsg.classList.add("visible");
+                }
+
+            });
+
+        </script>
+
+        <script src="site.js" defer></script>
+
+    </body>
+</html>

@@ -1,0 +1,17 @@
+.git
+.tools
+target
+legacy-python
+tests
+data
+.env
+*.db
+*.db-*
+config.json
+shadow.json
+requests.json
+offsets.json
+keys
+certificates
+logs
+tmp

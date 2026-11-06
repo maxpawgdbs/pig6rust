@@ -1,0 +1,7 @@
+{
+  "user_id": 7,
+  "text": " \nПривет 🙂 \n",
+  "private_pem": "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEIAABAgMEBQYHCAkKCwwNDg8QERITFBUWFxgZGhscHR4f\n-----END PRIVATE KEY-----\n",
+  "public_pem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAA6EHv/POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg=\n-----END PUBLIC KEY-----\n",
+  "signature": "0acddb458867326e314d0c5d6661742e24d1519a87d0ed85cbebde87e57d0653fdb613084b2a44aebc3fc1b71d32ec1087a479c589bdb6a25dbd59d8731af80b"
+}

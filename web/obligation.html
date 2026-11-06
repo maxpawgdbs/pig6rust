@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Pig-6 Digital Obligation</title>
+
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background: #e9e9e9;
+            color: #111;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            padding: 24px 0;
+        }
+
+        .page {
+            position: relative;
+            width: 210mm;
+            height: 297mm;
+            padding: 8.5mm 10.6mm 8mm;
+            background: #fff;
+            overflow: hidden;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.18);
+        }
+
+        .page-inner {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mono {
+            font-family: "Courier New", Courier, monospace;
+        }
+
+        /* =========================
+           Header
+           ========================= */
+
+        .header {
+            height: 20mm;
+            position: relative;
+            flex: 0 0 auto;
+        }
+
+        .brand {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .brand-name {
+            font-size: 9.4mm;
+            line-height: 1;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+        .brand-sub {
+            margin-top: 1.2mm;
+            font-size: 2.45mm;
+            line-height: 1;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            color: #444;
+        }
+
+        .official {
+            position: absolute;
+            right: 0;
+            top: 3.2mm;
+            font-size: 3.7mm;
+            line-height: 1;
+            font-weight: 800;
+            letter-spacing: 0.045em;
+        }
+
+        .header-rule {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-top: 0.45mm solid #111;
+        }
+
+        /* =========================
+           Metadata
+           ========================= */
+
+        .metadata {
+            height: 13mm;
+            flex: 0 0 auto;
+
+            display: grid;
+            grid-template-columns:
+                1.02fr
+                1fr
+                1fr
+                0.88fr
+                1.13fr;
+
+            border-bottom: 0.35mm solid #b8b8b8;
+        }
+
+        .meta {
+            min-width: 0;
+            padding: 3.4mm 3.2mm 0;
+            border-right: 0.35mm solid #b8b8b8;
+        }
+
+        .meta:last-child {
+            border-right: 0;
+        }
+
+        .label {
+            font-size: 2.25mm;
+            line-height: 1.1;
+            font-weight: 800;
+            letter-spacing: 0.09em;
+            color: #444;
+            text-transform: uppercase;
+        }
+
+        .value {
+            margin-top: 2.6mm;
+            font-size: 2.85mm;
+            line-height: 1.05;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: clip;
+        }
+
+        /* =========================
+           Title
+           ========================= */
+
+        .title-area {
+            height: 30mm;
+            flex: 0 0 auto;
+            text-align: center;
+            padding-top: 7.1mm;
+        }
+
+        .main-title {
+            margin: 0;
+            font-size: 10.4mm;
+            line-height: 1;
+            font-weight: 800;
+            letter-spacing: 0.018em;
+            white-space: nowrap;
+        }
+
+        .subtitle {
+            margin-top: 3.2mm;
+            font-size: 3.35mm;
+            line-height: 1;
+            color: #444;
+        }
+
+        /* =========================
+           Sections
+           ========================= */
+
+        .section {
+            position: relative;
+            flex: 0 0 auto;
+        }
+
+        .section-title {
+            height: 7mm;
+
+            display: flex;
+            align-items: center;
+            gap: 3.5mm;
+
+            font-size: 4.35mm;
+            line-height: 1;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            white-space: nowrap;
+        }
+
+        .section-title::before,
+        .section-title::after {
+            content: "";
+            height: 0.35mm;
+            background: #b8b8b8;
+            flex: 1;
+        }
+
+        /* =========================
+           Parties
+           ========================= */
+
+        .parties-box {
+            height: 35mm;
+
+            border: 0.35mm solid #111;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .party {
+            padding: 5mm 6.4mm 3.5mm;
+        }
+
+        .party + .party {
+            border-left: 0.35mm solid #b8b8b8;
+        }
+
+        .party-title {
+            margin-bottom: 3.8mm;
+            font-size: 4.05mm;
+            font-weight: 800;
+        }
+
+        .party-row {
+            height: 5.1mm;
+
+            display: grid;
+            grid-template-columns: 42mm 1fr;
+            align-items: center;
+
+            font-size: 2.9mm;
+            line-height: 1;
+        }
+
+        .party-row .key {
+            color: #444;
+        }
+
+        .party-row .val {
+            min-width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        /* =========================
+           Obligation
+           ========================= */
+
+        .obligation {
+            margin-top: 5mm;
+        }
+
+        .obligation-box {
+            height: 35.5mm;
+
+            border: 0.35mm solid #111;
+
+            padding: 5mm 4.8mm 3.8mm;
+        }
+
+        .amount-label {
+            text-align: center;
+
+            font-size: 3mm;
+            line-height: 1;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #444;
+        }
+
+        .amount {
+            margin-top: 2.4mm;
+
+            text-align: center;
+
+            font-size: 8.4mm;
+            line-height: 1;
+            font-weight: 800;
+            letter-spacing: 0.01em;
+        }
+
+        .obligation-grid {
+            margin-top: 3.5mm;
+            height: 10.7mm;
+
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+
+            border: 0.3mm dashed #b8b8b8;
+        }
+
+        .obl-cell {
+            min-width: 0;
+
+            text-align: center;
+
+            padding-top: 2.1mm;
+
+            border-right: 0.3mm dashed #b8b8b8;
+        }
+
+        .obl-cell:last-child {
+            border-right: 0;
+        }
+
+        .obl-label {
+            font-size: 1.95mm;
+            line-height: 1;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            color: #444;
+        }
+
+        .obl-value {
+            margin-top: 2.4mm;
+
+            font-size: 2.65mm;
+            line-height: 1;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* =========================
+           Terms
+           ========================= */
+
+        .terms {
+            margin-top: 5mm;
+        }
+
+        .terms-box {
+            height: 31mm;
+
+            border: 0.35mm solid #111;
+
+            padding: 5mm 5.5mm 3mm;
+            overflow: hidden;
+        }
+
+        .terms-text {
+            min-height: 4mm;
+
+            font-family: "Courier New", Courier, monospace;
+            font-size: 2.65mm;
+            line-height: 1.35;
+        }
+
+        .terms-rule {
+            height: 5.9mm;
+            border-bottom: 0.25mm dashed #b8b8b8;
+        }
+
+        /* =========================
+           Confirmation
+           ========================= */
+
+        .confirmation {
+            margin-top: 4.5mm;
+        }
+
+        .confirmation-text {
+            padding: 1.6mm 5.8mm 0;
+
+            font-size: 2.55mm;
+            line-height: 1.38;
+        }
+
+        .confirmation-text p {
+            margin: 0 0 2mm;
+        }
+
+        /* =========================
+           Verification
+           ========================= */
+
+        .verification {
+            margin-top: 1.5mm;
+        }
+
+        .verification-box {
+            height: 23.7mm;
+
+            border: 0.35mm solid #111;
+
+            display: grid;
+            grid-template-columns: 1fr 38mm 29mm;
+            align-items: stretch;
+        }
+
+        .verification-data {
+            padding: 3.7mm 5.5mm 2.5mm;
+        }
+
+        .verification-row {
+            height: 4.7mm;
+
+            display: grid;
+            grid-template-columns: 42mm 1fr;
+            align-items: center;
+
+            font-size: 2.55mm;
+            line-height: 1;
+        }
+
+        .verification-row .key {
+            color: #444;
+        }
+
+        .verification-row .val {
+            min-width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .qr-cell {
+            border-left: 0.35mm solid #b8b8b8;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .qr-box {
+            width: 16mm;
+            height: 16mm;
+
+            border: 0.35mm solid #111;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .qr-placeholder {
+            padding: 1.5mm;
+
+            font-family: "Courier New", Courier, monospace;
+            font-size: 2.1mm;
+            line-height: 1.1;
+
+            word-break: break-all;
+        }
+
+        .scan-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            font-size: 2.45mm;
+            line-height: 1.25;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            color: #444;
+        }
+
+        /* =========================
+           Signatures
+           ========================= */
+
+        .signatures {
+            margin-top: 4.2mm;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5.5mm;
+        }
+
+        .signature-box {
+            height: 18.6mm;
+
+            border: 0.35mm solid #111;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #777;
+
+            font-size: 3.25mm;
+            letter-spacing: 0.05em;
+        }
+
+        .signature-meta {
+            height: 9.3mm;
+            margin-top: 2mm;
+
+            font-size: 2.15mm;
+            line-height: 1.35;
+        }
+
+        .signature-meta .sig-title {
+            font-weight: 800;
+            letter-spacing: 0.06em;
+        }
+
+        .signature-meta .sig-name {
+            margin-top: 0.5mm;
+        }
+
+        .signature-meta .sig-id {
+            font-family: "Courier New", Courier, monospace;
+        }
+
+        /* =========================
+           Footer
+           ========================= */
+
+        .footer {
+            position: absolute;
+            left: 10.6mm;
+            right: 10.6mm;
+            bottom: 1mm;
+
+            height: 15mm;
+
+            border-top: 0.1mm solid #111;
+
+            padding-top: 2.4mm;
+
+            font-size: 2.05mm;
+            line-height: 1.32;
+        }
+
+        .footer-left {
+            position: absolute;
+            left: 0;
+            top: 2.3mm;
+        }
+
+        .footer-left div {
+            white-space: nowrap;
+        }
+
+        .footer-page {
+            position: absolute;
+            right: 0;
+            top: 6.8mm;
+
+            font-size: 2.4mm;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+        }
+
+        .generated-note {
+            margin-top: 0.4mm;
+            color: #444;
+        }
+
+        /* =========================
+           Print
+           ========================= */
+
+        @media print {
+            html,
+            body {
+                background: #fff;
+            }
+
+            body {
+                padding: 0;
+            }
+
+            .page {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <div class="page-inner">
+
+            <!-- Header -->
+            <header class="header">
+                <div class="brand">
+                    <div class="brand-name">PIG-6</div>
+                    <div class="brand-sub">
+                        DIGITAL OBLIGATION SYSTEM
+                    </div>
+                </div>
+
+                <div class="header-rule"></div>
+            </header>
+
+            <!-- Metadata -->
+            <section class="metadata">
+                <div class="meta">
+                    <div class="label">DOCUMENT TYPE</div>
+                    <div class="value">Digital Bill / Marker</div>
+                </div>
+
+                <div class="meta">
+                    <div class="label">DOCUMENT ID</div>
+                    <div class="value mono">{{DOCUMENT_ID}}</div>
+                </div>
+
+                <div class="meta">
+                    <div class="label">ISSUE DATE</div>
+                    <div class="value mono">{{ISSUE_DATE}}</div>
+                </div>
+
+                <div class="meta">
+                    <div class="label">STATUS</div>
+                    <div class="value">{{STATUS}}</div>
+                </div>
+
+                <div class="meta">
+                    <div class="label">DOCUMENT HASH</div>
+                    <div class="value mono">{{DOCUMENT_HASH}}</div>
+                </div>
+            </section>
+
+            <!-- Title -->
+            <section class="title-area">
+                <h1 class="main-title">
+                    DIGITAL BILL OF OBLIGATION
+                </h1>
+
+                <div class="subtitle">
+                    Pig-6 Digital Obligation Document
+                </div>
+            </section>
+
+            <!-- Parties -->
+            <section class="section">
+                <div class="section-title">
+                    <span>PARTIES</span>
+                </div>
+
+                <div class="parties-box">
+
+                    <div class="party">
+                        <div class="party-title">ISSUER</div>
+
+                        <div class="party-row">
+                            <span class="key">Name:</span>
+                            <span class="val">{{ISSUER_NAME}}</span>
+                        </div>
+
+                        <div class="party-row">
+                            <span class="key">Username:</span>
+                            <span class="val">{{ISSUER_USERNAME}}</span>
+                        </div>
+
+                        <div class="party-row">
+                            <span class="key">Account ID:</span>
+                            <span class="val mono">{{ISSUER_ID}}</span>
+                        </div>
+                    </div>
+
+                    <div class="party">
+                        <div class="party-title">HOLDER</div>
+
+                        <div class="party-row">
+                            <span class="key">Name:</span>
+                            <span class="val">{{HOLDER_NAME}}</span>
+                        </div>
+
+                        <div class="party-row">
+                            <span class="key">Username:</span>
+                            <span class="val">{{HOLDER_USERNAME}}</span>
+                        </div>
+
+                        <div class="party-row">
+                            <span class="key">Account ID:</span>
+                            <span class="val mono">{{HOLDER_ID}}</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Obligation -->
+            <section class="section obligation">
+                <div class="section-title">
+                    <span>OBLIGATION</span>
+                </div>
+
+                <div class="obligation-box">
+                    <div class="amount-label">
+                        OBLIGATION VALUE
+                    </div>
+
+                    <div class="amount mono">
+                        {{AMOUNT}} P6T
+                    </div>
+
+                    <div class="obligation-grid">
+
+                        <div class="obl-cell">
+                            <div class="obl-label">CURRENCY</div>
+                            <div class="obl-value">P6T</div>
+                        </div>
+
+                        <div class="obl-cell">
+                            <div class="obl-label">ISSUED AT</div>
+                            <div class="obl-value mono">
+                                {{ISSUE_DATE}}
+                            </div>
+                        </div>
+
+                        <div class="obl-cell">
+                            <div class="obl-label">DUE DATE</div>
+                            <div class="obl-value mono">
+                                {{DUE_DATE}}
+                            </div>
+                        </div>
+
+                        <div class="obl-cell">
+                            <div class="obl-label">PURPOSE</div>
+                            <div class="obl-value">
+                                {{PURPOSE}}
+                            </div>
+                        </div>
+
+                        <div class="obl-cell">
+                            <div class="obl-label">STATUS</div>
+                            <div class="obl-value">
+                                {{STATUS}}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Terms -->
+            <section class="section terms">
+                <div class="section-title">
+                    <span>TERMS OF OBLIGATION</span>
+                </div>
+
+                <div class="terms-box">
+                    <div class="terms-text">
+                        {{TERMS}}
+                    </div>
+
+                    <div class="terms-rule"></div>
+                    <div class="terms-rule"></div>
+                    <div class="terms-rule"></div>
+                    <div class="terms-rule"></div>
+                    <div class="terms-rule"></div>
+                    <div class="terms-rule"></div>
+                    <div class="terms-rule"></div>
+                </div>
+            </section>
+
+            <!-- Confirmation -->
+            <section class="section confirmation">
+                <div class="section-title">
+                    <span>CONFIRMATION</span>
+                </div>
+
+                <div class="confirmation-text">
+                    <p>
+                        By signing this document, both parties acknowledge
+                        the terms of the obligation stated herein and confirm
+                        their consent to the conditions specified above.
+                    </p>
+
+                    <p>
+                        Each digital signature is cryptographically associated
+                        with the document data and is intended to verify the
+                        identity of the corresponding signing party and the
+                        integrity of this document.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Document Verification -->
+            <section class="section verification">
+                <div class="section-title">
+                    <span>DOCUMENT VERIFICATION</span>
+                </div>
+
+                <section class="signatures">
+
+                    <div>
+                        <div class="signature-box">
+                            DIGITAL SIGNATURE A
+                        </div>
+
+                        <div class="signature-meta">
+                            <div class="sig-title">
+                                ISSUER SIGNATURE
+                            </div>
+
+                            <div class="sig-name">
+                                {{ISSUER_NAME}}
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="signature-box">
+                            DIGITAL SIGNATURE B
+                        </div>
+
+                        <div class="signature-meta">
+                            <div class="sig-title">
+                                HOLDER SIGNATURE
+                            </div>
+
+                            <div class="sig-name">
+                                {{HOLDER_NAME}}
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+            </section>
+
+            
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+
+            <div class="footer-left">
+                <div>
+                    Pig-6 Digital Obligation System
+                </div>
+
+                <div class="mono">
+                    Document ID: {{DOCUMENT_ID}}
+                </div>
+
+                <div class="mono">
+                    Generated: {{GENERATED_AT}}
+                </div>
+
+                <div class="generated-note">
+                    This document is digitally generated and
+                    cryptographically verifiable.
+                </div>
+            </div>
+
+            <div class="footer-page">
+                PAGE 1 OF 1
+            </div>
+
+        </footer>
+    </div>
+</body>
+</html>

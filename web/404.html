@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+        <meta charset="UTF-8">
+
+        <title>404 — Pig-6</title>
+
+        <link rel="stylesheet" href="common.css">
+
+        <style>
+
+body {
+
+    height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+main {
+
+    flex:1;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:32px;
+
+}
+
+
+#app {
+
+    max-width:600px;
+
+    width:100%;
+
+}
+
+
+.card {
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    padding:40px;
+
+    box-shadow:var(--shadow);
+
+    text-align:center;
+
+}
+
+
+h1 {
+
+    font-size:90px;
+
+    font-weight:700;
+
+    letter-spacing:-4px;
+
+    line-height:1;
+
+    margin-bottom:20px;
+
+    position:relative;
+
+    display:inline-block;
+
+}
+
+h1::before,
+h1::after {
+
+    content:"404";
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+
+    overflow:hidden;
+
+    opacity:.7;
+
+}
+
+h1::before {
+
+    color:var(--green);
+
+    animation:glitch-1 2.6s infinite linear alternate-reverse;
+
+}
+
+h1::after {
+
+    color:var(--purple);
+
+    animation:glitch-2 3.1s infinite linear alternate-reverse;
+
+}
+
+@keyframes glitch-1 {
+
+    0% { clip-path: inset(0 0 90% 0); transform:translate(-2px,-1px); }
+    20% { clip-path: inset(20% 0 60% 0); transform:translate(2px,1px); }
+    40% { clip-path: inset(60% 0 10% 0); transform:translate(-1px,2px); }
+    60% { clip-path: inset(10% 0 70% 0); transform:translate(1px,-2px); }
+    80% { clip-path: inset(80% 0 5% 0); transform:translate(-2px,1px); }
+    100% { clip-path: inset(40% 0 40% 0); transform:translate(2px,-1px); }
+
+}
+
+@keyframes glitch-2 {
+
+    0% { clip-path: inset(30% 0 40% 0); transform:translate(2px,1px); }
+    25% { clip-path: inset(70% 0 5% 0); transform:translate(-2px,-1px); }
+    50% { clip-path: inset(5% 0 80% 0); transform:translate(1px,2px); }
+    75% { clip-path: inset(50% 0 20% 0); transform:translate(-1px,-2px); }
+    100% { clip-path: inset(15% 0 65% 0); transform:translate(2px,1px); }
+
+}
+
+@media(prefers-reduced-motion:reduce){
+
+    h1::before, h1::after { animation:none; opacity:0; }
+
+}
+
+
+.title {
+
+    font-size:24px;
+
+    font-weight:700;
+
+    margin-bottom:12px;
+
+}
+
+
+.text {
+
+    color:var(--muted);
+
+    font-size:16px;
+
+    margin-bottom:26px;
+
+}
+
+.home-btn {
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:12px 22px;
+
+    background:var(--green);
+
+    color:#04140a;
+
+    border:none;
+
+    border-radius:12px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    text-decoration:none;
+
+    cursor:pointer;
+
+    transition:opacity .2s ease, transform .15s ease;
+
+}
+
+.home-btn:hover {
+
+    opacity:.9;
+
+}
+
+.home-btn:active {
+
+    transform:scale(.97);
+
+}
+
+
+footer {
+
+    margin-top:30px;
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:13px;
+
+}
+
+
+</style>
+
+    </head>
+
+    <body>
+
+        <div id="site-header"></div>
+
+        <main>
+
+            <div id="app">
+
+                <div class="card glow-hover reveal">
+
+                    <h1>
+
+                        404
+
+                    </h1>
+
+                    <div class="title">
+
+                        Page not found
+
+                    </div>
+
+                    <div class="text">
+
+                        The requested page does not exist.
+
+                    </div>
+
+                    <a href="/" class="home-btn ripple">
+                        ← Back to Pig-6
+                    </a>
+
+                </div>
+
+                <footer>
+
+                    Nothing here.
+
+                </footer>
+
+            </div>
+
+        </main>
+
+        <script src="site.js" defer></script>
+
+    </body>
+
+</html>

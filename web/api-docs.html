@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Pig-6 — API</title>
+
+        <link rel="stylesheet" href="common.css">
+
+        <style>
+
+#app{
+
+    max-width:980px;
+
+    margin:0 auto;
+
+    padding:60px 32px 100px;
+
+}
+
+.badge{
+
+    display:inline-flex;
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    margin-bottom:22px;
+
+}
+
+h1{
+
+    font-size:56px;
+
+    letter-spacing:-2px;
+
+    margin-bottom:16px;
+
+}
+
+.lede{
+
+    color:var(--muted);
+
+    font-size:17px;
+
+    max-width:640px;
+
+    line-height:1.7;
+
+    margin-bottom:50px;
+
+}
+
+.card{
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    padding:26px 28px;
+
+    margin-bottom:24px;
+
+}
+
+.card h2{
+
+    font-size:19px;
+
+    margin-bottom:10px;
+
+}
+
+.card p{
+
+    color:var(--muted);
+
+    line-height:1.7;
+
+    font-size:14.5px;
+
+}
+
+.card p + p{
+
+    margin-top:10px;
+
+}
+
+.card code.inline{
+
+    background:var(--surface-2);
+
+    border:1px solid var(--border);
+
+    padding:2px 7px;
+
+    border-radius:6px;
+
+    font-family:ui-monospace,SFMono-Regular,monospace;
+
+    font-size:13px;
+
+    color:var(--text);
+
+}
+
+/* ---- section headers ---- */
+
+.section-title{
+
+    font-size:26px;
+
+    letter-spacing:-.5px;
+
+    margin:64px 0 22px;
+
+}
+
+.section-title:first-of-type{
+
+    margin-top:0;
+
+}
+
+/* ---- endpoint cards ---- */
+
+.endpoint{
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    padding:28px;
+
+    margin-bottom:22px;
+
+}
+
+.endpoint-head{
+
+    display:flex;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-bottom:6px;
+
+}
+
+.method{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    padding:4px 10px;
+
+    border-radius:8px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    letter-spacing:.04em;
+
+    font-family:ui-monospace,SFMono-Regular,monospace;
+
+}
+
+.method.get{
+
+    background:rgba(34,197,94,.14);
+
+    color:var(--green);
+
+    border:1px solid rgba(34,197,94,.3);
+
+}
+
+.method.post{
+
+    background:rgba(139,92,246,.14);
+
+    color:#a78bfa;
+
+    border:1px solid rgba(139,92,246,.3);
+
+}
+
+.endpoint-path{
+
+    font-family:ui-monospace,SFMono-Regular,monospace;
+
+    font-size:16px;
+
+    font-weight:600;
+
+}
+
+.auth-pill{
+
+    margin-left:auto;
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    padding:4px 11px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    border:1px solid var(--border);
+
+    color:var(--muted);
+
+}
+
+.auth-pill.required{
+
+    color:#fbbf24;
+
+    border-color:rgba(251,191,36,.35);
+
+    background:rgba(251,191,36,.08);
+
+}
+
+.auth-pill.required::before{
+
+    content:"";
+
+    width:6px;
+
+    height:6px;
+
+    border-radius:50%;
+
+    background:#fbbf24;
+
+}
+
+.auth-pill.open::before{
+
+    content:"";
+
+    width:6px;
+
+    height:6px;
+
+    border-radius:50%;
+
+    background:var(--muted);
+
+}
+
+.endpoint-desc{
+
+    color:var(--muted);
+
+    font-size:14.5px;
+
+    line-height:1.7;
+
+    margin:14px 0 20px;
+
+}
+
+.params{
+
+    margin-bottom:20px;
+
+}
+
+.params-label{
+
+    font-size:12px;
+
+    text-transform:uppercase;
+
+    letter-spacing:.08em;
+
+    color:var(--muted);
+
+    margin-bottom:10px;
+
+}
+
+.param-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+.param{
+
+    display:flex;
+
+    gap:12px;
+
+    align-items:baseline;
+
+    font-size:13.5px;
+
+}
+
+.param code{
+
+    font-family:ui-monospace,SFMono-Regular,monospace;
+
+    background:var(--surface-2);
+
+    border:1px solid var(--border);
+
+    padding:2px 7px;
+
+    border-radius:6px;
+
+    color:var(--text);
+
+    white-space:nowrap;
+
+}
+
+.param span{
+
+    color:var(--muted);
+
+}
+
+.code-block{
+
+    background:var(--bg);
+
+    border:1px solid var(--border);
+
+    border-radius:14px;
+
+    margin-bottom:16px;
+
+    overflow:hidden;
+
+}
+
+.code-block:last-child{
+
+    margin-bottom:0;
+
+}
+
+.code-block-head{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:10px 16px;
+
+    border-bottom:1px solid var(--border);
+
+}
+
+.code-block-label{
+
+    font-size:11px;
+
+    text-transform:uppercase;
+
+    letter-spacing:.08em;
+
+    color:var(--muted);
+
+}
+
+.copy-btn{
+
+    padding:5px 11px;
+
+    background:var(--surface-2);
+
+    color:var(--text);
+
+    border:1px solid var(--border);
+
+    border-radius:8px;
+
+    font-size:12px;
+
+    cursor:pointer;
+
+    transition:.2s ease;
+
+}
+
+.copy-btn:hover{
+
+    background:#27272a;
+
+}
+
+.copy-btn.copied{
+
+    background:var(--green);
+
+    border-color:var(--green);
+
+    color:#04140a;
+
+}
+
+pre{
+
+    padding:16px;
+
+    overflow-x:auto;
+
+    white-space:pre-wrap;
+
+    word-break:break-word;
+
+    font-family:ui-monospace,SFMono-Regular,monospace;
+
+    font-size:13.5px;
+
+    line-height:1.7;
+
+    color:#d4d4d8;
+
+}
+
+.errors{
+
+    margin-top:18px;
+
+}
+
+.errors-label{
+
+    font-size:12px;
+
+    text-transform:uppercase;
+
+    letter-spacing:.08em;
+
+    color:var(--muted);
+
+    margin-bottom:10px;
+
+}
+
+.errors ul{
+
+    list-style:none;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:6px;
+
+}
+
+.errors li{
+
+    font-size:13.5px;
+
+    color:var(--muted);
+
+    padding-left:16px;
+
+    position:relative;
+
+}
+
+.errors li::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:8px;
+
+    width:5px;
+
+    height:5px;
+
+    border-radius:50%;
+
+    background:#ef4444;
+
+}
+
+/* ---- summary table ---- */
+
+.summary-wrap{
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    overflow:hidden;
+
+    margin-bottom:40px;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    font-size:14px;
+
+}
+
+thead th{
+
+    text-align:left;
+
+    padding:14px 20px;
+
+    font-size:12px;
+
+    text-transform:uppercase;
+
+    letter-spacing:.06em;
+
+    color:var(--muted);
+
+    border-bottom:1px solid var(--border);
+
+}
+
+tbody td{
+
+    padding:14px 20px;
+
+    border-bottom:1px solid var(--border);
+
+    vertical-align:middle;
+
+}
+
+tbody tr:last-child td{
+
+    border-bottom:none;
+
+}
+
+tbody tr{
+
+    transition:background var(--transition);
+
+}
+
+tbody tr:hover{
+
+    background:var(--surface-2);
+
+}
+
+td.path-cell{
+
+    font-family:ui-monospace,SFMono-Regular,monospace;
+
+}
+
+/* ---- important note ---- */
+
+.notice{
+
+    background:rgba(239,68,68,.06);
+
+    border:1px solid rgba(239,68,68,.25);
+
+    border-radius:var(--radius);
+
+    padding:24px 28px;
+
+}
+
+.notice h2{
+
+    font-size:17px;
+
+    color:#f87171;
+
+    margin-bottom:10px;
+
+}
+
+.notice p{
+
+    color:var(--muted);
+
+    font-size:14.5px;
+
+    line-height:1.7;
+
+}
+
+.notice p + p{
+
+    margin-top:8px;
+
+}
+
+footer{
+
+    margin-top:70px;
+
+    color:#71717a;
+
+    font-size:14px;
+
+    text-align:center;
+
+}
+
+@media(max-width:640px){
+
+h1{
+
+    font-size:38px;
+
+}
+
+.auth-pill{
+
+    margin-left:0;
+
+}
+
+table, thead, tbody, th, td, tr{
+
+    display:block;
+
+}
+
+thead{
+
+    display:none;
+
+}
+
+tbody tr{
+
+    border-bottom:1px solid var(--border);
+
+    padding:14px 20px;
+
+}
+
+tbody tr:last-child{
+
+    border-bottom:none;
+
+}
+
+tbody td{
+
+    border:none;
+
+    padding:4px 0;
+
+}
+
+td.path-cell::before{
+
+    content:"Endpoint · ";
+
+    color:var(--muted);
+
+    font-family:inherit;
+
+}
+
+}
+
+</style>
+
+    </head>
+
+    <body>
+
+        <div id="site-header"></div>
+
+        <div id="app">
+
+            <div class="badge reveal">
+                Developer docs
+            </div>
+
+            <h1 class="reveal reveal-delay-1">
+                Pig-6 API
+            </h1>
+
+            <p class="lede reveal reveal-delay-2">
+                Interact with the Pig-6 economy from your own applications
+                using a personal API key — check the market, read the
+                leaderboard, and manage your own balance, codes and
+                transfers.
+            </p>
+
+            <div class="card glow-hover reveal">
+
+                <h2>Authentication</h2>
+
+                <p>
+                    Protected endpoints require an API key, sent in the
+                    HTTP <code class="inline">Authorization</code> header
+                    using the Bearer scheme.
+                </p>
+
+                <p>
+                    The API identifies the Pig-6 user automatically from
+                    the API key — you never need to send a Telegram user
+                    ID yourself.
+                </p>
+
+                <div class="code-block" style="margin-top:16px;">
+
+                    <div class="code-block-head">
+                        <span class="code-block-label">Header</span>
+                        <button class="copy-btn ripple"
+                            onclick="copyText('auth-header', this)">Copy</button>
+                    </div>
+
+                    <pre
+                        id="auth-header"><code>Authorization: Bearer YOUR_API_KEY</code></pre>
+
+                </div>
+
+            </div>
+
+            <!-- ============================= -->
+            <!-- Public endpoints -->
+            <!-- ============================= -->
+
+            <h2 class="section-title reveal">Public endpoints</h2>
+
+            <div class="endpoint glow-hover reveal">
+
+                <div class="endpoint-head">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/api/market</span>
+                    <span class="auth-pill open">No auth required</span>
+                </div>
+
+                <p class="endpoint-desc">
+                    Returns information about the current anonymous-code
+                    market: how many codes are available, and the current
+                    buy and sell price for one code.
+                </p>
+
+                <div class="code-block">
+
+                    <div class="code-block-head">
+                        <span class="code-block-label">Response</span>
+                        <button class="copy-btn ripple"
+                            onclick="copyText('resp-market', this)">Copy</button>
+                    </div>
+
+                    <pre id="resp-market"><code>{
+    "available": 100,
+    "buy_price": 150,
+    "sell_price": 120
+}</code></pre>
+
+                </div>
+
+            </div>
+
+            <div class="endpoint glow-hover reveal">
+
+                <div class="endpoint-head">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/api/top</span>
+                    <span class="auth-pill open">No auth required</span>
+                </div>
+
+                <p class="endpoint-desc">
+                    Returns the Pig-6 leaderboard, sorted by P6T balance
+                    from highest to lowest.
+                </p>
+
+                <div class="params">
+
+                    <div class="params-label">Query parameters</div>
+
+                    <div class="param-list">
+                        <div class="param">
+                            <code>limit</code>
+                            <span>optional — how many users to return</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="code-block">
+
+                    <div class="code-block-head">
+                        <span class="code-block-label">Request</span>
+                        <button class="copy-btn ripple"
+                            onclick="copyText('req-top', this)">Copy</button>
+                    </div>
+
+                    <pre id="req-top"><code>GET /api/top?limit=10</code></pre>
+
+                </div>
+
+                <div class="code-block">
+
+                    <div class="code-block-head">
+                        <span class="code-block-label">Response</span>
+                        <button class="copy-btn ripple"
+                            onclick="copyText('resp-top', this)">Copy</button>
+                    </div>
+
+                    <pre id="resp-top"><code>[
+    {
+        "rank": 1,
+        "name": "Alice",
+        "balance": 15000
+    },
+    {
+        "rank": 2,
+        "name": "Bob",
+        "balance": 12000
+    }
+]</code></pre>
+
+                </div>
+
+            </div>
+
+            <!-- ============================= -->
+            <!-- Authenticated endpoints -->
+            <!-- ============================= -->
+
+            <h2 class="section-title reveal">Authenticated endpoints</h2>
+
+            <div class="endpoint glow-hover reveal">
+
+                <div class="endpoint-head">
+                    <span class="method get">GET</span>
+                    <span class="endpoint-path">/api/balance</span>
+                    <span class="auth-pill required">Auth required</span>
+                </div>
+
+                <p class="endpoint-desc">
+                    Returns the authenticated user's current P6T balance.
+                    The user is determined automatically from the API key.
+                </p>
+
+                <div class="code-block">
+
+                    <div class="code-block-head">
+                        <span class="code-block-label">Response</span>
+                        <button class="copy-btn ripple"
+                            onclick="copyText('resp-balance', this)">Copy</button>
+                    </div>
+
+                    <pre id="resp-balance"><code>{
+    "user_id": 123456789,
+    "balance": 1500
+}</code></pre>
+
+                </div>
+
+            </div>
+
+            <div class="endpoint glow-hover reveal">
+
+                <div class="endpoint-head">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/api/buy</span>
+                    <span class="auth-pill required">Auth required</span>
+                </div>
+
+                <p class="endpoint-desc">
+                    Purchases anonymous codes using P6T. Authenticates the
+                    user, checks availability and price, confirms the
+                    user has enough P6T, charges them, then delivers the
+                    codes.
+                </p>
+
+                <div class="params">
+
+                    <div class="params-label">Query parameters</div>
+
+                    <div class="param-list">
+                        <div class="param">
+                            <code>count</code>
+                            <span>optional — number of codes to buy, defaults to
+                                1</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="code-block">
+
+                    <div class="code-block-head">
+                        <span class="code-block-label">Request</span>
+                        <button class="copy-btn ripple"
+                            onclick="copyText('req-buy', this)">Copy</button>
+                    </div>
+
+                    <pre id="req-buy"><code>POST /api/buy?count=5</code></pre>
+
+                </div>
+
+                <div class="code-block">
+
+                    <div class="code-block-head">
+                        <span class="code-block-label">Response</span>
+                        <button class="copy-btn ripple"
+                            onclick="copyText('resp-buy', this)">Copy</button>
+                    </div>
+
+                    <pre id="resp-buy"><code>{
+    "status": "ok",
+    "user_id": 123456789,
+    "count": 5,
+    "price": 750,
+    "balance": 750
+}</code></pre>
+
+                </div>
+
+                <div class="errors">
+
+                    <div class="errors-label">Possible errors</div>
+
+                    <ul>
+                        <li>Invalid API key</li>
+                        <li>Not enough codes</li>
+                        <li>Insufficient funds</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="endpoint glow-hover reveal">
+
+                <div class="endpoint-head">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/api/sell</span>
+                    <span class="auth-pill required">Auth required</span>
+                </div>
+
+                <p class="endpoint-desc">
+                    Sells anonymous codes owned by the authenticated user.
+                    Confirms the user owns enough codes, calculates the
+                    current selling price, removes the codes, then
+                    credits P6T.
+                </p>
+
+                <div class="params">
+
+                    <div class="params-label">Query parameters</div>
+
+                    <div class="param-list">
+                        <div class="param">
+                            <code>count</code>
+                            <span>optional — number of codes to sell, defaults
+                                to 1</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="code-block">
+
+                    <div class="code-block-head">
+                        <span class="code-block-label">Request</span>
+                        <button class="copy-btn ripple"
+                            onclick="copyText('req-sell', this)">Copy</button>
+                    </div>
+
+                    <pre id="req-sell"><code>POST /api/sell?count=3</code></pre>
+
+                </div>
+
+                <div class="code-block">
+
+                    <div class="code-block-head">
+                        <span class="code-block-label">Response</span>
+                        <button class="copy-btn ripple"
+                            onclick="copyText('resp-sell', this)">Copy</button>
+                    </div>
+
+                    <pre id="resp-sell"><code>{
+    "status": "ok",
+    "user_id": 123456789,
+    "count": 3,
+    "price": 360,
+    "balance": 1860
+}</code></pre>
+
+                </div>
+
+                <div class="errors">
+
+                    <div class="errors-label">Possible errors</div>
+
+                    <ul>
+                        <li>Invalid API key</li>
+                        <li>Not enough codes</li>
+                        <li>Sale failed</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="endpoint glow-hover reveal">
+
+                <div class="endpoint-head">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/api/pay</span>
+                    <span class="auth-pill required">Auth required</span>
+                </div>
+
+                <p class="endpoint-desc">
+                    Transfers P6T from the authenticated user to another
+                    Pig-6 user, found by username. Checks the sender's
+                    balance, transfers the amount, and returns the
+                    updated sender balance.
+                </p>
+
+                <div class="params">
+
+                    <div class="params-label">Query parameters</div>
+
+                    <div class="param-list">
+                        <div class="param">
+                            <code>username</code>
+                            <span>recipient's Pig-6 username</span>
+                        </div>
+                        <div class="param">
+                            <code>amount</code>
+                            <span>amount of P6T to transfer</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="code-block">
+
+                    <div class="code-block-head">
+                        <span class="code-block-label">Request</span>
+                        <button class="copy-btn ripple"
+                            onclick="copyText('req-pay', this)">Copy</button>
+                    </div>
+
+                    <pre
+                        id="req-pay"><code>POST /api/pay?username=@alice&amount=100</code></pre>
+
+                </div>
+
+                <div class="code-block">
+
+                    <div class="code-block-head">
+                        <span class="code-block-label">Response</span>
+                        <button class="copy-btn ripple"
+                            onclick="copyText('resp-pay', this)">Copy</button>
+                    </div>
+
+                    <pre id="resp-pay"><code>{
+    "status": "ok",
+    "sender_id": 123456789,
+    "receiver_id": 987654321,
+    "username": "@alice",
+    "amount": 100,
+    "balance": 1400
+}</code></pre>
+
+                </div>
+
+                <div class="errors">
+
+                    <div class="errors-label">Possible errors</div>
+
+                    <ul>
+                        <li>Invalid API key</li>
+                        <li>User not found</li>
+                        <li>Insufficient funds</li>
+                        <li>You cannot transfer funds to yourself</li>
+                        <li>Transfer failed</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="endpoint glow-hover reveal">
+
+                <div class="endpoint-head">
+                    <span class="method post">POST</span>
+                    <span class="endpoint-path">/api/bonus</span>
+                    <span class="auth-pill required">Auth required</span>
+                </div>
+
+                <p class="endpoint-desc">
+                    Claims the user's periodic P6T bonus. The user is
+                    identified automatically from the API key. The bonus
+                    can only be claimed again once the cooldown period
+                    has expired.
+                </p>
+
+                <div class="code-block">
+
+                    <div class="code-block-head">
+                        <span class="code-block-label">Response — success</span>
+                        <button class="copy-btn ripple"
+                            onclick="copyText('resp-bonus-ok', this)">Copy</button>
+                    </div>
+
+                    <pre id="resp-bonus-ok"><code>{
+    "status": "ok",
+    "user_id": 123456789,
+    "amount": 427,
+    "balance": 1927
+}</code></pre>
+
+                </div>
+
+                <div class="code-block">
+
+                    <div class="code-block-head">
+                        <span class="code-block-label">Response — cooldown
+                            active</span>
+                        <button class="copy-btn ripple"
+                            onclick="copyText('resp-bonus-cd', this)">Copy</button>
+                    </div>
+
+                    <pre id="resp-bonus-cd"><code>{
+    "error": "Bonus not available",
+    "remaining": {
+        "hours": 5,
+        "minutes": 42
+    }
+}</code></pre>
+
+                </div>
+
+            </div>
+
+            <!-- ============================= -->
+            <!-- Summary -->
+            <!-- ============================= -->
+
+            <h2 class="section-title reveal">API summary</h2>
+
+            <div class="summary-wrap glow-hover reveal">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Endpoint</th>
+                            <th>Auth</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td><span class="method get">GET</span></td>
+                            <td class="path-cell">/api/market</td>
+                            <td>No</td>
+                            <td>View code market</td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="method get">GET</span></td>
+                            <td class="path-cell">/api/top</td>
+                            <td>No</td>
+                            <td>View leaderboard</td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="method get">GET</span></td>
+                            <td class="path-cell">/api/balance</td>
+                            <td>Yes</td>
+                            <td>View your balance</td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="method post">POST</span></td>
+                            <td class="path-cell">/api/buy</td>
+                            <td>Yes</td>
+                            <td>Buy anonymous codes</td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="method post">POST</span></td>
+                            <td class="path-cell">/api/sell</td>
+                            <td>Yes</td>
+                            <td>Sell anonymous codes</td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="method post">POST</span></td>
+                            <td class="path-cell">/api/pay</td>
+                            <td>Yes</td>
+                            <td>Transfer P6T</td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="method post">POST</span></td>
+                            <td class="path-cell">/api/bonus</td>
+                            <td>Yes</td>
+                            <td>Claim bonus</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="notice reveal">
+
+                <h2>Important</h2>
+
+                <p>
+                    All prices and balances are denominated in P6T, the
+                    internal currency of the Pig-6 ecosystem.
+                </p>
+
+                <p>
+                    API keys are personal credentials. They must not be
+                    exposed publicly, committed to repositories, or
+                    embedded directly into frontend code.
+                </p>
+
+            </div>
+
+            <footer>
+                Pig-6 © 2026
+            </footer>
+
+        </div>
+
+        <script>
+
+async function copyText(id, button) {
+
+    const text = document.getElementById(id).innerText;
+
+    await navigator.clipboard.writeText(text);
+
+    button.classList.add("copied");
+    button.textContent = "Copied";
+
+    setTimeout(() => {
+
+        button.classList.remove("copied");
+        button.textContent = "Copy";
+
+    }, 1500);
+
+}
+
+</script>
+
+        <script src="site.js" defer></script>
+
+    </body>
+</html>

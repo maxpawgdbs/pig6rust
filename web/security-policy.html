@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Политика безопасности канала — Pig-6</title>
+    <meta name="description" content="Политика безопасности канала, условия анонимных публикаций, требования к администраторам и правила предоставления подписки.">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; color: #202124; background: #f3f4f6; font: 16px/1.7 Georgia, "Times New Roman", serif; }
+        a { color: #23416b; text-underline-offset: 3px; }
+        .topbar { max-width: 980px; margin: auto; padding: 24px 30px; display: flex; justify-content: space-between; gap: 20px; font: 14px/1.5 system-ui, sans-serif; }
+        .topbar a { text-decoration: none; }
+        .brand { font-weight: 700; color: #202124; }
+        article { max-width: 980px; margin: 0 auto 48px; padding: 56px 64px; background: #fff; border: 1px solid #dfe2e7; box-shadow: 0 8px 32px #00000006; }
+        .document-type { margin: 0 0 16px; font: 12px/1.5 system-ui, sans-serif; letter-spacing: .09em; text-transform: uppercase; color: #5e6470; }
+        h1 { margin: 0; font-size: clamp(26px, 4vw, 38px); line-height: 1.25; }
+        .subtitle { margin: 16px 0 32px; color: #5e6470; }
+        .policy-content { border-top: 1px solid #dfe2e7; padding-top: 32px; white-space: pre-wrap; overflow-wrap: anywhere; }
+        footer { margin-top: 36px; padding-top: 20px; border-top: 1px solid #dfe2e7; font: 13px/1.6 system-ui, sans-serif; color: #5e6470; }
+        @media (max-width: 600px) {
+            body { background: #fff; font-size: 15px; }
+            .topbar { padding: 20px; }
+            article { margin: 0; padding: 28px 20px 40px; border: 0; box-shadow: none; }
+            .policy-content { padding-top: 24px; }
+        }
+        @media print {
+            body { background: #fff; font-size: 11pt; }
+            .topbar { display: none; }
+            article { max-width: none; margin: 0; padding: 0; border: 0; box-shadow: none; }
+            footer { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="topbar" aria-label="Навигация">
+        <a class="brand" href="/">Pig-6</a>
+        <a href="/">На главную</a>
+    </nav>
+    <main>
+        <article aria-labelledby="policy-title">
+            <p class="document-type">Нормативный документ / Анонимные публикации</p>
+            <h1 id="policy-title">Политика безопасности канала</h1>
+            <p class="subtitle">Правила использования сервиса, подписок и административных полномочий.</p>
+            <div class="policy-content">{{ policy_text }}</div>
+            <footer>Постоянная ссылка на документ: <a href="{{ canonical_url }}">{{ canonical_url }}</a></footer>
+        </article>
+    </main>
+</body>
+</html>

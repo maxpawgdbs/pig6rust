@@ -1,0 +1,12 @@
+services:
+  pigbot:
+    build: .
+    container_name: pigbot
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./data:/data
+      - ./web/security-policy.txt:/app/web/security-policy.txt:ro
+    ports:
+      - "2322:2322"
+    stop_grace_period: 15s

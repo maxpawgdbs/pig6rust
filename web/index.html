@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Pig-6</title>
+
+        <link rel="stylesheet" href="common.css">
+
+        <style>
+
+main{
+
+    min-height:calc(100vh - var(--header-h));
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:60px 40px 40px;
+
+    text-align:center;
+
+}
+
+.badge{
+
+    display:inline-flex;
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    margin-bottom:28px;
+
+}
+
+.logo{
+
+    width:14px;
+    height:14px;
+
+    border-radius:50%;
+
+    background:var(--green);
+
+    box-shadow:0 0 18px rgba(34,197,94,.8);
+
+    margin-bottom:22px;
+
+    animation:pulse-dot 2.6s ease-in-out infinite;
+
+}
+
+h1{
+
+    font-size:72px;
+
+    letter-spacing:-3px;
+
+    margin-bottom:18px;
+
+    background:linear-gradient(135deg,var(--text) 40%,var(--muted));
+
+    -webkit-background-clip:text;
+
+    background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+}
+
+.subtitle{
+
+    color:var(--muted);
+
+    font-size:18px;
+
+    max-width:620px;
+
+    line-height:1.7;
+
+}
+
+.cards{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+
+    gap:18px;
+
+    margin-top:60px;
+
+    width:100%;
+
+    max-width:900px;
+
+}
+
+.card{
+
+    display:block;
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    padding:24px;
+
+    text-align:left;
+
+}
+
+.card h2{
+
+    font-size:18px;
+
+    margin-bottom:8px;
+
+    color: var(--text);
+
+}
+
+.card p{
+
+    color:var(--muted);
+
+    line-height:1.6;
+
+}
+
+/* --- Bot suite / feature breakdown --- */
+
+.features{
+
+    width:100%;
+
+    max-width:900px;
+
+    margin-top:90px;
+
+    text-align:left;
+
+}
+
+.features-header{
+
+    text-align:center;
+
+    margin-bottom:36px;
+
+}
+
+.features-header h2{
+
+    font-size:34px;
+
+    letter-spacing:-1px;
+
+    margin-bottom:10px;
+
+}
+
+.features-header p{
+
+    color:var(--muted);
+
+    font-size:16px;
+
+    max-width:560px;
+
+    margin:0 auto;
+
+    line-height:1.6;
+
+}
+
+.feature-list{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
+    gap:18px;
+
+}
+
+.feature{
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    padding:24px;
+
+}
+
+.feature-tag{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-size:12px;
+
+    letter-spacing:.06em;
+
+    text-transform:uppercase;
+
+    color:var(--green);
+
+    margin-bottom:10px;
+
+}
+
+.feature-tag::before{
+
+    content:"";
+
+    width:6px;
+
+    height:6px;
+
+    border-radius:50%;
+
+    background:var(--green);
+
+}
+
+.feature h3{
+
+    font-size:17px;
+
+    margin-bottom:8px;
+
+}
+
+.feature p{
+
+    color:var(--muted);
+
+    font-size:14.5px;
+
+    line-height:1.6;
+
+}
+
+footer{
+
+    margin-top:70px;
+
+    color:#71717a;
+
+    font-size:14px;
+
+}
+
+@media(max-width:900px){
+
+h1{
+
+    font-size:48px;
+
+}
+
+.features{
+
+    margin-top:60px;
+
+}
+
+.features-header h2{
+
+    font-size:26px;
+
+}
+
+}
+
+</style>
+
+    </head>
+
+    <body>
+
+        <div id="site-header"></div>
+
+        <main>
+
+            <div class="badge reveal">
+                Pig-6 Network
+            </div>
+
+            <div class="logo reveal reveal-delay-1"></div>
+
+            <h1 class="reveal reveal-delay-1">
+                Pig-6
+            </h1>
+
+            <p class="subtitle reveal reveal-delay-2">
+                Secure infrastructure for protected Telegram communities,
+                cryptographic certificates and distributed moderation.
+            </p>
+
+            <!--
+                Certificates and Marketplace used to live here as cards.
+                They now live in the site header nav on every page, so
+                the homepage cards focus purely on capability, not routing.
+            -->
+            <div class="cards">
+
+                <div class="card glow-hover reveal reveal-delay-1">
+                    <h2>Protection</h2>
+                    <p>
+                        Intelligent moderation, Shadow Protocol and Judgment Day
+                        protection systems.
+                    </p>
+                </div>
+
+                <div class="card glow-hover reveal reveal-delay-2">
+                    <h2>Moderation</h2>
+                    <p>
+                        Leetspeak-aware filtering, per-user and per-GIF bans,
+                        and automatic lockdown on message floods.
+                    </p>
+                </div>
+
+                <div class="card glow-hover reveal reveal-delay-3">
+                    <h2>Economy</h2>
+                    <p>
+                        A P6T token economy with dynamic pricing, transfers
+                        and a redeemable-code marketplace.
+                    </p>
+                </div>
+
+            </div>
+
+            <section class="features">
+
+                <div class="features-header reveal">
+                    <h2>What Pig-6 does</h2>
+                    <p>
+                        Five cooperating bots sharing one config, built to
+                        keep a channel's identity, content and admin list
+                        under control.
+                    </p>
+                </div>
+
+                <div class="feature-list">
+
+                    <div class="feature glow-hover reveal">
+                        <span class="feature-tag">Identity</span>
+                        <h3>Channel protection</h3>
+                        <p>
+                            A rotating name + invisible UUID pair confirms
+                            that a post really came from the registered
+                            owner, a super user, or a protected channel.
+                            Impersonation attempts are deleted on sight, and
+                            the UUID rotates after every legitimate post so
+                            a captured signature can't be replayed.
+                        </p>
+                    </div>
+
+                    <div class="feature glow-hover reveal reveal-delay-1">
+                        <span class="feature-tag">Blacklist</span>
+                        <h3>EXCOMMUNICADO</h3>
+                        <p>
+                            A permanent mark that strips a protected
+                            channel or user of its protection and adds it
+                            to the blacklist. Once applied it's final —
+                            the entry is cut off from the network for
+                            good, managed by Alpha users from the admin
+                            panel.
+                        </p>
+                    </div>
+
+                    <div class="feature glow-hover reveal reveal-delay-2">
+                        <span class="feature-tag">Media</span>
+                        <h3>Media download</h3>
+                        <p>
+                            Pulls any photo, video, document or voice
+                            message posted in the main channel straight to
+                            the requesting user, no forwarding required —
+                            just reply to the post with the command.
+                        </p>
+                    </div>
+
+                    <div class="feature glow-hover reveal reveal-delay-3">
+                        <span class="feature-tag">Signing</span>
+                        <h3>Certificates</h3>
+                        <p>
+                            Registered users get an Ed25519 keypair and can
+                            sign any message inline. Each signed post carries
+                            a verification link so anyone can confirm it's
+                            authentic, with optional shadow-role visibility.
+                        </p>
+                    </div>
+
+                    <div class="feature glow-hover reveal">
+                        <span class="feature-tag">Moderation</span>
+                        <h3>Content filtering</h3>
+                        <p>
+                            Off, manual or full lockdown moderation modes,
+                            with leetspeak-aware word filtering, per-user and
+                            per-GIF bans, a whitelist system, and automatic
+                            lockdown if 10+ messages land within 5 seconds.
+                        </p>
+                    </div>
+
+                    <div class="feature glow-hover reveal reveal-delay-1">
+                        <span class="feature-tag">Emergency</span>
+                        <h3>Judgment Day protocol</h3>
+                        <p>
+                            A dedicated lockdown mode: the channel switches
+                            to maximum security and a separate bot deletes
+                            any message that doesn't carry the current
+                            secret code, which rotates after each use.
+                        </p>
+                    </div>
+
+                    <div class="feature glow-hover reveal reveal-delay-2">
+                        <span class="feature-tag">Control</span>
+                        <h3>Admin panel</h3>
+                        <p>
+                            An inline dashboard for Alpha users to toggle
+                            moderation and Judgment Day, and to browse and
+                            manage protected, super and signed users.
+                        </p>
+                    </div>
+
+                    <div class="feature glow-hover reveal reveal-delay-3">
+                        <span class="feature-tag">Assistant</span>
+                        <h3>Jarvis AI</h3>
+                        <p>
+                            A Gemini-powered assistant that responds when
+                            mentioned and runs the same protection pipeline
+                            on every message. A designated master user can
+                            issue natural-language admin commands to it.
+                        </p>
+                    </div>
+
+                    <div class="feature glow-hover reveal reveal-delay-4">
+                        <span class="feature-tag">Economy</span>
+                        <h3>P6T token economy</h3>
+                        <p>
+                            A lightweight SQLite-backed economy tracking
+                            balances, peer-to-peer transfers and a
+                            redeemable-code marketplace with price history.
+                        </p>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <footer>
+
+                Pig-6 © 2026
+
+            </footer>
+
+        </main>
+
+        <script src="site.js" defer></script>
+
+    </body>
+</html>
